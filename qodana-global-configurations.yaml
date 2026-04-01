@@ -1,4 +1,84 @@
 configurations:
+  # ─────────────────────────────────────────────────
+  # Base / shared configuration
+  # ─────────────────────────────────────────────────
+  - id: base
+    name: Base (Security & Licensing)
+    description: >
+      Shared baseline configuration enforcing zero critical findings,
+      security inspections, license compliance, and hardcoded-password checks.
+      All other profiles inherit from this.
+    qodanaYaml: base/qodana.yaml
+
+  # ─────────────────────────────────────────────────
+  # Language-specific profiles
+  # ─────────────────────────────────────────────────
+  - id: python
+    name: Python / Django / Jinja2
+    description: >
+      Full Python profile including Django and Jinja2 template inspections,
+      PEP 8 style, type checking, and 40% total / 50% fresh code coverage gates.
+      Linter: jetbrains/qodana-python
+    qodanaYaml: profiles/python/qodana.yaml
+
+  - id: js_ts
+    name: JavaScript / TypeScript
+    description: >
+      JS/TS profile with ESLint integration, HTML inspections,
+      and 40% total / 50% fresh code coverage gates.
+      Linter: jetbrains/qodana-js
+    qodanaYaml: profiles/js-ts/qodana.yaml
+
+  - id: jvm
+    name: JVM (Java / Kotlin)
+    description: >
+      JVM profile with Spring and Lombok support, SQL inspections,
+      and 50% total / 60% fresh code coverage gates.
+      Linter: jetbrains/qodana-jvm
+    qodanaYaml: profiles/jvm/qodana.yaml
+
+  - id: web
+    name: HTML / CSS / Web
+    description: >
+      Web-focused profile for HTML, CSS, and accessibility inspections.
+      Ideal for template-heavy or static-site projects.
+      Linter: jetbrains/qodana-js
+    qodanaYaml: profiles/web/qodana.yaml
+
+  - id: go
+    name: Go
+    description: >
+      Go profile with security, best-practice, and unused-variable inspections,
+      and 50% total / 60% fresh code coverage gates.
+      Linter: jetbrains/qodana-go
+    qodanaYaml: profiles/go/qodana.yaml
+
+  - id: dotnet
+    name: .NET (C# / F# / VB)
+    description: >
+      .NET profile with security inspections, license compliance,
+      and 50% total / 60% fresh code coverage gates.
+      Linter: jetbrains/qodana-dotnet
+    qodanaYaml: profiles/dotnet/qodana.yaml
+
+  - id: php
+    name: PHP
+    description: >
+      PHP profile with security and best-practice inspections.
+      Linter: jetbrains/qodana-php
+    qodanaYaml: profiles/php/qodana.yaml
+
+  - id: fullstack
+    name: Full-Stack (Multi-language)
+    description: >
+      Combined profile for projects that span multiple languages.
+      Run a separate Qodana scan per linter and assign this shared config
+      to each. Includes license and hardcoded-password checks.
+    qodanaYaml: profiles/fullstack/qodana.yaml
+
+  # ─────────────────────────────────────────────────
+  # Legacy team-based profiles (examples)
+  # ─────────────────────────────────────────────────
   - id: team_a
     name: Team A
     description: Configurations used for Team A projects
@@ -8,4 +88,5 @@ configurations:
     name: Team B
     description: Configurations used for Team B projects
     qodanaYaml: teamB/qodana.yaml
+
         

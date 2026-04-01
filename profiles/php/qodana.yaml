@@ -1,0 +1,49 @@
+version: 1.0
+
+imports:
+  - ../../base/qodana.yaml
+
+# PHP profile — use with jetbrains/qodana-php linter
+# Recommended linter: jetbrains/qodana-php:2025.1
+
+failureConditions:
+  severityThresholds:
+    critical: 0
+    high: 10
+
+profile:
+  name: qodana.recommended
+
+  groups:
+    - groupId: PHPSecurity
+      groups:
+        - "category:PHP/Security"
+
+    - groupId: PHPBestPractices
+      groups:
+        - "category:PHP"
+
+  inspections:
+    - group: PHPSecurity
+      enabled: true
+
+    - group: PHPBestPractices
+      enabled: true
+
+    - inspection: CheckDependencyLicenses
+      enabled: true
+      options:
+        usePackageSearch: true
+
+    - inspection: HardcodedPasswords
+      enabled: true
+      options:
+        reportDefaultSuspiciousVariableNames: true
+
+exclude:
+  - name: All
+    paths:
+      - vendor
+      - .git
+      - .github
+      - node_modules

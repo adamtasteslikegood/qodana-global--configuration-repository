@@ -1,0 +1,46 @@
+version: 1.0
+
+imports:
+  - ../../base/qodana.yaml
+
+# Full-stack profile — combines Python + JS/TS + HTML inspections
+# Use with the linter that matches the project's primary language.
+# For mixed Python/JS projects, run separate Qodana scans per linter.
+
+failureConditions:
+  severityThresholds:
+    critical: 0
+    high: 10
+
+  testCoverageThresholds:
+    fresh: 50
+    total: 40
+
+profile:
+  name: qodana.recommended
+
+  inspections:
+    - inspection: CheckDependencyLicenses
+      enabled: true
+      options:
+        usePackageSearch: true
+
+    - inspection: HardcodedPasswords
+      enabled: true
+      options:
+        reportDefaultSuspiciousVariableNames: true
+
+exclude:
+  - name: All
+    paths:
+      - node_modules
+      - .venv
+      - venv
+      - __pycache__
+      - dist
+      - build
+      - .git
+      - .github
+      - .next
+      - .nuxt
+      - migrations
