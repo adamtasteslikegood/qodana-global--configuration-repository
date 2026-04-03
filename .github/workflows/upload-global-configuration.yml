@@ -76,3 +76,4 @@ jobs:
             jetbrains/qodana-configuration-uploader:latest \
             --global-configs-file qodana-global-configurations.yaml \
             --qodana-host https://qodana.cloud
+
