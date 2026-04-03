@@ -1,0 +1,84 @@
+version: 1.0
+
+imports:
+  - ../../base/qodana.yaml
+
+# Python profile — use with jetbrains/qodana-python linter
+# Recommended linter: jetbrains/qodana-python:2025.1
+
+failureConditions:
+  severityThresholds:
+    critical: 0
+    high: 10
+
+  testCoverageThresholds:
+    fresh: 50
+    total: 40
+
+profile:
+  name: qodana.recommended
+
+  groups:
+    - groupId: PythonSecurity
+      groups:
+        - "category:Python/Security"
+
+    - groupId: PythonBestPractices
+      groups:
+        - "category:Python"
+
+    - groupId: DjangoInspections
+      groups:
+        - "category:Django"
+
+    - groupId: Jinja2Inspections
+      groups:
+        - "category:Jinja2"
+
+  inspections:
+    - group: PythonSecurity
+      enabled: true
+
+    - group: PythonBestPractices
+      enabled: true
+
+    - group: DjangoInspections
+      enabled: true
+
+    - group: Jinja2Inspections
+      enabled: true
+
+    - inspection: CheckDependencyLicenses
+      enabled: true
+      options:
+        usePackageSearch: true
+
+    - inspection: HardcodedPasswords
+      enabled: true
+      options:
+        reportDefaultSuspiciousVariableNames: true
+
+    - inspection: PyUnresolvedReferencesInspection
+      enabled: true
+
+    - inspection: PyTypeCheckerInspection
+      enabled: true
+
+    - inspection: PyPep8Inspection
+      enabled: true
+
+    - inspection: PyUnusedLocalInspection
+      enabled: true
+
+exclude:
+  - name: All
+    paths:
+      - .venv
+      - venv
+      - __pycache__
+      - .mypy_cache
+      - .pytest_cache
+      - node_modules
+      - .git
+      - .github
+      - migrations

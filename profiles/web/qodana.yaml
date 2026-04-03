@@ -1,0 +1,69 @@
+version: 1.0
+
+imports:
+  - ../../base/qodana.yaml
+
+# Web/HTML profile — use with jetbrains/qodana-js linter
+# For HTML, Jinja, and Django template-heavy projects
+# Recommended linter: jetbrains/qodana-js:2025.1
+
+failureConditions:
+  severityThresholds:
+    critical: 0
+    high: 10
+
+profile:
+  name: qodana.recommended
+
+  groups:
+    - groupId: HTMLInspections
+      groups:
+        - "category:HTML"
+
+    - groupId: CSSInspections
+      groups:
+        - "category:CSS"
+
+    - groupId: AccessibilityInspections
+      groups:
+        - "category:HTML/Accessibility"
+
+  inspections:
+    - group: HTMLInspections
+      enabled: true
+
+    - group: CSSInspections
+      enabled: true
+
+    - group: AccessibilityInspections
+      enabled: true
+
+    - inspection: CheckDependencyLicenses
+      enabled: true
+      options:
+        usePackageSearch: true
+
+    - inspection: HtmlUnknownTag
+      enabled: true
+
+    - inspection: HtmlUnknownAttribute
+      enabled: true
+
+    - inspection: CssUnusedSymbol
+      enabled: true
+
+    - inspection: CssInvalidPropertyValue
+      enabled: true
+
+    - inspection: HtmlDeprecatedAttribute
+      enabled: true
+
+exclude:
+  - name: All
+    paths:
+      - node_modules
+      - dist
+      - build
+      - .git
+      - .github
+      - vendor

@@ -2,26 +2,78 @@ name: Qodana Configuration Upload
 
 on:
   push:
-    branches: [ main, dev ]
+    branches:
+      - main
+      - master
+      - dev
+      - develop
+      - 'dev/**'
+      - 'development/**'
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+      - master
+      - dev
+      - develop
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
-  upload-qodana-config:
+  validate:
+    name: Validate YAML configurations
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Validate YAML syntax
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: '.'
+          config_data: |
+            extends: default
+            rules:
+              line-length:
+                max: 200
+              truthy:
+                check-keys: false
+
+  upload:
+    name: Upload Qodana configurations
+    runs-on: ubuntu-latest
+    needs: validate
+    # Only upload on pushes to default/dev branches, not on PRs
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Skip when token is unavailable
+        id: check-token
+        env:
+          QODANA_CONFIGURATIONS_TOKEN: ${{ secrets.QODANA_CONFIGURATIONS_TOKEN }}
+        run: |
+          if [ -z "$QODANA_CONFIGURATIONS_TOKEN" ]; then
+            echo "::notice::QODANA_CONFIGURATIONS_TOKEN is not configured. Skipping upload."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run Qodana Configuration Uploader
+        if: steps.check-token.outputs.skip != 'true'
         env:
           QODANA_CONFIGURATIONS_TOKEN: ${{ secrets.QODANA_CONFIGURATIONS_TOKEN }}
         run: |
           docker run --rm \
-            -v $(pwd):/workspace \
+            -v "$(pwd)":/workspace \
             -w /workspace \
-            -e QODANA_CONFIGURATIONS_TOKEN=$QODANA_CONFIGURATIONS_TOKEN \
+            -e QODANA_CONFIGURATIONS_TOKEN="$QODANA_CONFIGURATIONS_TOKEN" \
             jetbrains/qodana-configuration-uploader:latest \
-            --global-configs-file qodana-global-configurations.yaml
+            --global-configs-file qodana-global-configurations.yaml \
+            --qodana-host https://qodana.cloud
+

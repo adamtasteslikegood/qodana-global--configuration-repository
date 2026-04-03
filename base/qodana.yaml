@@ -1,5 +1,9 @@
 version: 1.0
 
+# Base profile — inherited by all language-specific profiles.
+# Enforces zero-critical policy, security inspections, license compliance,
+# and hardcoded-password detection.
+
 failureConditions:
   severityThresholds:
     critical: 0
@@ -10,6 +14,12 @@ profile:
       groups:
         - "category:Java/Security"
         - "category:Security"
+        - "category:Python/Security"
+        - "category:JavaScript/Security"
+        - "category:TypeScript/Security"
+        - "category:Go/Security"
+        - "category:PHP/Security"
+        - "category:C#/Security"
 
   inspections:
     - group: Security

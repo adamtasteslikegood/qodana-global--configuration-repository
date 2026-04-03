@@ -1,0 +1,81 @@
+version: 1.0
+
+imports:
+  - ../../base/qodana.yaml
+
+# JavaScript/TypeScript profile — use with jetbrains/qodana-js linter
+# Recommended linter: jetbrains/qodana-js:2025.1
+
+failureConditions:
+  severityThresholds:
+    critical: 0
+    high: 10
+
+  testCoverageThresholds:
+    fresh: 50
+    total: 40
+
+profile:
+  name: qodana.recommended
+
+  groups:
+    - groupId: JSSecurity
+      groups:
+        - "category:JavaScript/Security"
+        - "category:TypeScript/Security"
+
+    - groupId: JSBestPractices
+      groups:
+        - "category:JavaScript"
+        - "category:TypeScript"
+
+    - groupId: HTMLInspections
+      groups:
+        - "category:HTML"
+
+  inspections:
+    - group: JSSecurity
+      enabled: true
+
+    - group: JSBestPractices
+      enabled: true
+
+    - group: HTMLInspections
+      enabled: true
+
+    - inspection: CheckDependencyLicenses
+      enabled: true
+      options:
+        usePackageSearch: true
+
+    - inspection: HardcodedPasswords
+      enabled: true
+      options:
+        reportDefaultSuspiciousVariableNames: true
+
+    - inspection: JSUnresolvedReference
+      enabled: true
+
+    - inspection: TypeScriptUnresolvedReference
+      enabled: true
+
+    - inspection: ESLintInspection
+      enabled: true
+
+    - inspection: CssUnusedSymbol
+      enabled: true
+
+    - inspection: HtmlUnknownAttribute
+      enabled: true
+
+exclude:
+  - name: All
+    paths:
+      - node_modules
+      - dist
+      - build
+      - coverage
+      - .next
+      - .nuxt
+      - .git
+      - .github
